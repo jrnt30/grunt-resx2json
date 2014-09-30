@@ -25,7 +25,7 @@ Task targets, files and options may be specified according to the grunt [Configu
 
 #### defaultLocale
 
-Type: `String`
+Type: `String`  
 Default: `en`
 
 The locale that a file will be assumed to represent should the _languagePattern_ not parse appropriately.
@@ -33,8 +33,8 @@ The locale that a file will be assumed to represent should the _languagePattern_
 
 #### concat
 
-Type: `Boolean`
-Default: `false`
+Type: `Boolean`  
+Default: `false`  
 
 Set `concat` to `true` to have all of the different locales be concated into a single output file, with their respective `locale` being the key and the value being the set of all corresponding values.
 
@@ -43,8 +43,8 @@ The default is false, which will then output a file per locale with the file for
 
 #### dest
 
-Type: `String`
-Default: `dist/output`
+Type: `String`  
+Default: `dist/output`  
 
 The output destination for the processed files.
 
@@ -54,8 +54,8 @@ When `concat` is `true`, the output will be in the format `dest``ext`.
 
 #### ext
 
-Type: 'String'
-Default: '.json'
+Type: 'String'  
+Default: '.json'  
 
 The default extension for the output files to have.
 
@@ -69,7 +69,7 @@ A regular expression with a single capture group that extracts the appropriate l
 
 #### localeExtractor
 
-Type: `Function`
+Type: `Function`  
 Default: `function(src, languagePattern){return dest}`
 
 A function given with arguments _(src,languagePattern)_ that is responsible for providing the locale for the given file.
