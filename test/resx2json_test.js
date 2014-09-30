@@ -29,22 +29,22 @@ exports['dotnetresources'] = {
     test.ok(jsonRepresentation.onlyInFrenchie, 'French only value not present in merged file');
     test.done();
   },
-  'resx2json:localOverride': function(test){
+  'resx2json:localeOverride': function(test){
     test.expect(1);
     test.ok(grunt.file.exists('tmp/localeOverride/output-abc.json'), 'Locale override was not present');
     test.done();
   },
-  'resx2json:languagePatternOverride': function(test){
+  'resx2json:localePatternOverride': function(test){
     test.expect(2);
-    test.ok(grunt.file.exists('tmp/languagePatternOverride/output-fr.json'), 'French file not properly generated');
-    test.ok(grunt.file.exists('tmp/languagePatternOverride/output-en.json'), 'English file not properly generated');
+    test.ok(grunt.file.exists('tmp/localePatternOverride/output-fr.json'), 'French file not properly generated');
+    test.ok(grunt.file.exists('tmp/localePatternOverride/output-en.json'), 'English file not properly generated');
     test.done();
   },
-  'resx2json:languagePatternConcatOverride': function(test){
+  'resx2json:localePatternConcatOverride': function(test){
     test.expect(4);
-    test.ok(grunt.file.exists('tmp/languagePatternConcatOverride/output.json'), 'Concated file not properly generated');
+    test.ok(grunt.file.exists('tmp/localePatternConcatOverride/output.json'), 'Concated file not properly generated');
 
-    var jsonRepresentation = grunt.file.readJSON('tmp/languagePatternConcatOverride/output.json');
+    var jsonRepresentation = grunt.file.readJSON('tmp/localePatternConcatOverride/output.json');
     test.ok(jsonRepresentation.en, 'No English representation found');
     test.ok(jsonRepresentation.fr, 'No French representation found');
     test.ok(jsonRepresentation.fr.onlyInFrenchie, 'French only value not present')

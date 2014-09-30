@@ -10,18 +10,18 @@ module.exports = function(grunt) {
       files: ['test/*.js']
     },
     resx2json: {
-      languagePatternOverride: {
-        src: ['test/fixtures/languagePatternOverride/**/*.resx'],
+      localePatternOverride: {
+        src: ['test/fixtures/localePatternOverride/**/*.resx'],
         options: {
-          dest: 'tmp/languagePatternOverride/output',
-          languagePattern: /([a-z]{2,2})-.*$/
+          dest: 'tmp/localePatternOverride/output',
+          localePattern: /([a-z]{2,2})-.*$/
         }
       },
-      languagePatternConcatOverride: {
-        src: ['test/fixtures/languagePatternOverride/**/*.resx'],
+      localePatternConcatOverride: {
+        src: ['test/fixtures/localePatternOverride/**/*.resx'],
         options: {
-          dest: 'tmp/languagePatternConcatOverride/output',
-          languagePattern: /([a-z]{2,2})-.*$/,
+          dest: 'tmp/localePatternConcatOverride/output',
+          localePattern: /([a-z]{2,2})-.*$/,
           concat: true
         }
       },
@@ -74,6 +74,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('test', ['default']);
-  grunt.registerTask('default', ['clean','resx2json:languagePatternOverride','resx2json:languagePatternConcatOverride','resx2json:localeExtractorOverride','resx2json:nonConcated', 'resx2json:concated', 'nodeunit']);
+  grunt.registerTask('default', ['clean','resx2json:localePatternOverride','resx2json:localePatternConcatOverride','resx2json:localeExtractorOverride','resx2json:nonConcated', 'resx2json:concated', 'nodeunit']);
 
 };

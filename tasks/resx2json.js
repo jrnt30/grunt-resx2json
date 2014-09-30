@@ -14,9 +14,9 @@ module.exports = function(grunt) {
     var options = task.options({
       defaultLocale: 'en',
       concat: false,
-      languagePattern: /^.+-(\w+).resx$/,
       dest: 'dist/output',
       ext: '.json',
+      localePattern: /^.+-(\w+).resx$/,
       localeExtractor: function(src, pattern){
         var match = pattern.exec(src);
         return match ? match[1] : null;
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     });
 
     var filesByLang =
-      _.groupBy(this.filesSrc,function(thisFile){return (options.localeExtractor(thisFile, options.languagePattern) || options.defaultLocale)});
+      _.groupBy(this.filesSrc,function(thisFile){return (options.localeExtractor(thisFile, options.localePattern) || options.defaultLocale)});
 
     var allLocales = {};
 
