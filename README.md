@@ -158,7 +158,7 @@ $ tree -I dist
 
 #### Specifying custom locale pattern
 
-In this example, we use a custom pattern to extract the locale of the files we are parsing.
+In this example, we use a custom pattern to extract the locale of the files we are parsing. The will result in a file per parsed locale being generated.
 
 ```js
 // Project configuration.
@@ -193,5 +193,7 @@ File Output Structure:
 $ tree -I dist
 .
 └── dist/
-    └── output.json
+    |── output-de.json
+    |── output-en.json
+    └── output-fr.json
 ```
