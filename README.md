@@ -123,7 +123,6 @@ In this example, running `grunt resx2json` will result in a single json file, wh
 ```js
 // Project configuration.
 grunt.initConfig({
-  unt.initConfig({
   resx2json: {
     src: ['templates/**/*.resx'],
     options: {
@@ -164,7 +163,6 @@ In this example, we use a custom pattern to extract the locale of the files we a
 ```js
 // Project configuration.
 grunt.initConfig({
-  unt.initConfig({
   resx2json: {
     src: ['templates/**/*.resx'],
     options: {
