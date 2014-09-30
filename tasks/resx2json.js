@@ -9,40 +9,47 @@ module.exports = function(grunt) {
   // ==========================================================================
 
   grunt.registerMultiTask('resx2json', 'Convert resx to a json file.', function() {
-    var tmp,options,lang,matchlang,jsonFromXml,lang_regex,
-      jsonToWrite={};
+    var task = this;
 
-    tmp = grunt.config(['resx2json', this.target, 'options']);
-    if (typeof tmp === 'object') {
-      grunt.verbose.writeln('Using "' + this.target + '" resx2json options.');
-      options = tmp;
-    } else {
-      grunt.verbose.writeln('Using master resx2json options.');
-      options = {
-        langregex: /^.+.aspx.(\w+).resx$/g,
-        concat: 'dist/output.json'
-      };
-    }
-    grunt.verbose.writeflags(options, 'Options');
-
-    grunt.file.expandFiles(this.file.src).forEach(function(filepath){
-      matchlang = filepath.match(options.langregex);
-      lang = matchlang ? RegExp.$1 : "en";
-      grunt.verbose.writeln("Language prefix: "+lang);
-      jsonFromXml = grunt.helper('resx2json',grunt.file.read(filepath),lang);
-      if (options.concat){
-        if (jsonToWrite[lang]){
-          extend(jsonToWrite[lang],jsonFromXml[lang]);
-        }else{
-          extend(jsonToWrite, jsonFromXml);
-        }
-      }else{
-        grunt.file.write(filepath+'.json',JSON.stringify(jsonFromXml,null,'\t'));
+    var options = task.options({
+      defaultLocale: 'en',
+      concat: false,
+      languagePattern: /^.+-(\w+).resx$/,
+      dest: 'dist/output',
+      ext: '.json',
+      localeExtractor: function(src, pattern){
+        var match = pattern.exec(src);
+        return match ? match[1] : null;
       }
     });
+
+    var filesByLang =
+      _.groupBy(this.filesSrc,function(thisFile){return (options.localeExtractor(thisFile, options.languagePattern) || options.defaultLocale)});
+
+    var allLocales = {};
+
+    _.each(filesByLang, function(fileArr, lang){
+      var allMerged =
+        _.chain(fileArr)
+          .map(function(filePath){
+            return parseFile(grunt.file.read(filePath));
+          })
+          .reduce(function(merged,cur){return _.extend(merged,cur);},{})
+          .value();
+
+      if (options.concat){
+        var cur = {};
+        cur[lang] = allMerged;
+        _.extend(allLocales, cur);
+      } else {
+        grunt.file.write(options.dest+'-'+lang+options.ext,JSON.stringify(allMerged, null, '\t'));
+      }
+    });
+
     if (options.concat){
-      grunt.file.write(options.concat,JSON.stringify(jsonToWrite,null,'\t'));
+      grunt.file.write(options.dest+options.ext,JSON.stringify(allLocales, null, '\t'));
     }
+
     // Fail task if errors were logged.
     if (this.errorCount) { return false; }
 
@@ -50,26 +57,23 @@ module.exports = function(grunt) {
     grunt.log.writeln('File converted..');
   });
 
-  // ==========================================================================
-  // HELPERS
-  // ==========================================================================
-
-  // Concat source files and/or directives.
-  grunt.registerHelper('resx2json', function(fileContent,lang) {
+  var parseFile = function(fileContent,lang) {
     var parser = new xml2js.Parser(),
-      resourceArr = {},
-      returnObj = {};
+        resourceArr = {};
+
     parser.parseString(fileContent, function (err, result) {
         if (err){
-          grunt.log.writeln("error:"+err);
+          grunt.error.writeln("error:"+err);
           return;
         }
-        var obj;
         _.each(result.data,function(item,key){
-          resourceArr[item['@'].name] = item.value;
+          if (item['@']){
+            resourceArr[item['@'].name] = item.value;
+          } else {
+            grunt.error.writeln('There was not the expected \'@\' attribute. You need at least two data elements for this module to work properly');
+          }
         });
     });
-    returnObj[lang] = resourceArr;
-    return returnObj;
-  });
+    return resourceArr;
+  };
 };
