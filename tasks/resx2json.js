@@ -66,13 +66,10 @@ module.exports = function(grunt) {
           grunt.error.writeln("error:"+err);
           return;
         }
-        _.each(result.data,function(item,key){
-          if (item['@']){
-            resourceArr[item['@'].name] = item.value;
-          } else {
-            grunt.error.writeln('There was not the expected \'@\' attribute. You need at least two data elements for this module to work properly');
-          }
-        });
+        if (result && result.root){
+          resourceArr = _.reduce(result.root.data, function(memo,curEle){memo[curEle['$'].name]=curEle.value; return memo;}, {});
+        }}
+
     });
     return resourceArr;
   };
