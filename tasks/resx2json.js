@@ -68,8 +68,7 @@ module.exports = function(grunt) {
         }
         if (result && result.root){
           resourceArr = _.reduce(result.root.data, function(memo,curEle){memo[curEle['$'].name]=curEle.value; return memo;}, {});
-        }}
-
+        }
     });
     return resourceArr;
   };
