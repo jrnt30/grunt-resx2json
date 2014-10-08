@@ -1,23 +1,22 @@
 {
-  "name": "grunt-resx2json",
+  "name": "grunt-resx2json-2",
   "description": "Changing resx files to json",
   "version": "0.2.0",
-  "homepage": "https://github.com/Alex-Seville/grunt-resx2json",
+  "homepage": "https://github.com/jrnt30/grunt-resx2json",
   "author": {
-    "name": "Alex Seville",
-    "url": "http://blog.alexanderseville.com"
+    "name": "Justin Nauman"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Alex-Seville/grunt-resx2json.git"
+    "url": "git://github.com/jrnt30/grunt-resx2json.git"
   },
   "bugs": {
-    "url": "https://github.com/Alex-Seville/grunt-resx2json/issues"
+    "url": "https://github.com/jrnt30/grunt-resx2json/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/Alex-Seville/grunt-resx2json/LICENSE-MIT"
+      "url": "https://github.com/jrnt30/grunt-resx2json/LICENSE-MIT"
     }
   ],
   "main": "Gruntfile.js",
