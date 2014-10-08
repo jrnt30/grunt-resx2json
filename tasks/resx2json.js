@@ -67,7 +67,7 @@ module.exports = function(grunt) {
           return;
         }
         if (result && result.root){
-          resourceArr = _.reduce(result.root.data, function(memo,curEle){memo[curEle['$'].name]=curEle.value; return memo;}, {});
+          resourceArr = _.reduce(result.root.data, function(memo,curEle){memo[curEle['$'].name]=(curEle.value||[])[0]; return memo;}, {});
         }
     });
     return resourceArr;

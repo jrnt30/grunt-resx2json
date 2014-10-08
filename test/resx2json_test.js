@@ -15,11 +15,11 @@ exports['dotnetresources'] = {
     var jsonRepresentation = grunt.file.readJSON(filename);
     test.ok(jsonRepresentation.en, 'No English representation found');
     test.ok(jsonRepresentation.fr, 'No French representation found');
-    test.ok(jsonRepresentation.fr.onlyInFrenchie, 'French only value not present')
+    test.ok(jsonRepresentation.fr.onlyInFrenchie, 'French only value not present');
     test.done();
   },
   'resx2json:nonConcated': function(test) {
-    test.expect(4);
+    test.expect(5);
     var basePath = 'tmp/nonConcated/output';
     var extension = '.json';
     test.ok(grunt.file.exists(basePath+'-en.json'), 'English file not present');
@@ -27,6 +27,7 @@ exports['dotnetresources'] = {
 
     var enJson = grunt.file.readJSON(basePath+'-en.json');
     test.ok(enJson.singleDataElem, 'Single data element was not properly parsed');
+    test.equal(typeof enJson.singleDataElem, 'string', 'Objects not being parsed properly');
 
     var jsonRepresentation = grunt.file.readJSON(basePath+'-fr.json');
     test.ok(jsonRepresentation.onlyInFrenchie, 'French only value not present in merged file');
