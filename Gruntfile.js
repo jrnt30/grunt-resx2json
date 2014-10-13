@@ -13,14 +13,14 @@ module.exports = function(grunt) {
       localePatternOverride: {
         src: ['test/fixtures/localePatternOverride/**/*.resx'],
         options: {
-          dest: 'tmp/localePatternOverride/output',
+          dest: 'tmp/localePatternOverride/',
           localePattern: /([a-z]{2,2})-.*$/
         }
       },
       localePatternConcatOverride: {
         src: ['test/fixtures/localePatternOverride/**/*.resx'],
         options: {
-          dest: 'tmp/localePatternConcatOverride/output',
+          dest: 'tmp/localePatternConcatOverride/',
           localePattern: /([a-z]{2,2})-.*$/,
           concat: true
         }
@@ -28,21 +28,28 @@ module.exports = function(grunt) {
       localeExtractorOverride: {
         src: ['test/fixtures/base/**/*.resx'],
         options: {
-          dest: 'tmp/localeOverride/output',
+          dest: 'tmp/localeOverride/',
           localeExtractor: function(){return 'abc'}
         }
       },
       nonConcated: {
         src: ['test/fixtures/base/**/*.resx'],
         options: {
-          dest: 'tmp/nonConcated/output'
+          dest: 'tmp/nonConcated/'
         }
       },
       concated: {
         src: ['test/fixtures/base/**/*.resx'],
         options: {
           concat: true,
-          dest: 'tmp/concated/output'
+          dest: 'tmp/concated/'
+        }
+      },
+      noPrefix: {
+        src: ['test/fixtures/base/**/*.resx'],
+        options: {
+          dest: 'tmp/noPrefix/',
+          prefix: ''
         }
       }
     },
@@ -74,6 +81,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('test', ['default']);
-  grunt.registerTask('default', ['clean','resx2json:localePatternOverride','resx2json:localePatternConcatOverride','resx2json:localeExtractorOverride','resx2json:nonConcated', 'resx2json:concated', 'nodeunit']);
+  grunt.registerTask('default', ['clean','resx2json:*','nodeunit']);
 
 };

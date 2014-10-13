@@ -10,44 +10,59 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('resx2json', 'Convert resx to a json file.', function() {
     var task = this;
+    var localeExtractor = function(src, options){
+        var match = options.localePattern.exec(src);
+        return match ? match[1] : options.defaultLocale;
+    };
 
+    var rename = function(src, options){
+      if (!options) options = src;
+      var filename;
+      if (options.concat){
+        filename = options.prefix+options.ext;
+      } else {
+        filename = (options.prefix ? options.prefix + '-' : '') + options.localeExtractor(src, options) + options.ext;
+      }
+      return filename;
+    };
+    var allLocales = {};
     var options = task.options({
       defaultLocale: 'en',
       concat: false,
-      dest: 'dist/output',
+      dest: 'dist/',
+      prefix: 'output',
       ext: '.json',
       localePattern: /^.+-(\w+).resx$/,
-      localeExtractor: function(src, pattern){
-        var match = pattern.exec(src);
-        return match ? match[1] : null;
-      }
+      localeExtractor: localeExtractor
     });
 
-    var filesByLang =
-      _.groupBy(this.filesSrc,function(thisFile){return (options.localeExtractor(thisFile, options.localePattern) || options.defaultLocale)});
+    var filesByLocale =
+      _.chain(this.filesSrc)
+        .map(function(thisFile){return {src: thisFile, locale: options.localeExtractor(thisFile, options), dest: rename(thisFile, options)}})
+        .groupBy(function(destObj){return destObj.locale})
+        .value();
 
-    var allLocales = {};
 
-    _.each(filesByLang, function(fileArr, lang){
+    _.each(filesByLocale, function(destObjs, locale){
       var allMerged =
-        _.chain(fileArr)
-          .map(function(filePath){
-            return parseFile(grunt.file.read(filePath));
+        _.chain(destObjs)
+          .map(function(destObj){
+            return parseFile(grunt.file.read(destObj.src));
           })
           .reduce(function(merged,cur){return _.extend(merged,cur);},{})
           .value();
 
       if (options.concat){
         var cur = {};
-        cur[lang] = allMerged;
+        cur[locale] = allMerged;
         _.extend(allLocales, cur);
       } else {
-        grunt.file.write(options.dest+'-'+lang+options.ext,JSON.stringify(allMerged, null, '\t'));
+        grunt.file.write(options.dest+destObjs[0].dest,JSON.stringify(allMerged, null, '\t'));
       }
     });
 
     if (options.concat){
-      grunt.file.write(options.dest+options.ext,JSON.stringify(allLocales, null, '\t'));
+      grunt.file.write(options.dest + rename(options),JSON.stringify(allLocales, null, '\t'));
     }
 
     // Fail task if errors were logged.

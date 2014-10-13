@@ -26,7 +26,7 @@ Task targets, files and options may be specified according to the grunt [Configu
 #### defaultLocale
 
 Type: `String`  
-Default: `en`
+Default: `en`  
 
 The locale that a file will be assumed to represent should the _languagePattern_ not parse appropriately.
 
@@ -44,13 +44,17 @@ The default is false, which will then output a file per locale with the file for
 #### dest
 
 Type: `String`  
-Default: `dist/output`  
+Default: `dist/`  
 
-The output destination for the processed files.
+The output folder for the processed files.
 
-When `concat` is `false`, this serves as the base name for the output, which will have the pattern `dest`-`locale``ext`.
+### prefix
+Type: `String`  
+Defaut: `output`  
 
-When `concat` is `true`, the output will be in the format `dest``ext`.
+When `concat` is `false`, this serves as the base name for the output, which will have the pattern `prefix`-`locale``ext`.
+
+When `concat` is `true`, the output will be in the format `prefix``ext`.
 
 #### ext
 
@@ -61,8 +65,8 @@ The default extension for the output files to have.
 
 #### languagePattern
 
-Type: `RegExp`
-Default: `/^.+-(\w+).resx$/`
+Type: `RegExp`  
+Default: `/^.+-(\w+).resx$/`  
 
 A regular expression with a single capture group that extracts the appropriate locale
 
@@ -70,9 +74,9 @@ A regular expression with a single capture group that extracts the appropriate l
 #### localeExtractor
 
 Type: `Function`  
-Default: `function(src, languagePattern){return dest}`
+Default: `function(src, options){return dest}`  
 
-A function given with arguments _(src,languagePattern)_ that is responsible for providing the locale for the given file.
+A function given with arguments _(src,options)_ that is responsible for providing the locale for the given file.
 
 This is used by the plugin to group all the files of a single locale.
 
@@ -116,6 +120,46 @@ $ tree -I dist
     |── output-en.json
     └── output-fr.json
 ```
+
+#### Custom prefix attribute
+In this example, remove the `prefix` attribute from standard Grunt configuration to customize file output to be `locale``ext`
+
+```js
+// Project configuration.
+grunt.initConfig({
+  resx2json: {
+    src: ['templates/**/*.resx'],
+    prefix: ''
+  }
+});
+```
+
+File Structure:
+```shell
+$ tree -I templates
+.
+├── baseLocalization/
+│   ├── base-de.resx
+│   ├── base-fr.resx
+│   └── base.resx
+└── extended/
+    ├── extended-de.resx
+    ├── extended-fr.resx
+    └── extended.resx
+
+2 directories, 6 files
+```
+
+File Output Structure:
+```shell
+$ tree -I dist
+.
+└── dist/
+    |── de.json
+    |── en.json
+    └── fr.json
+```
+
 
 #### Concat
 In this example, running `grunt resx2json` will result in a single json file, where there is a top level attribtue for each locale.

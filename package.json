@@ -1,7 +1,7 @@
 {
   "name": "grunt-resx2json-2",
   "description": "Changing resx files to json",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/jrnt30/grunt-resx2json",
   "author": {
     "name": "Justin Nauman"

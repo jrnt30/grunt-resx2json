@@ -53,5 +53,11 @@ exports['dotnetresources'] = {
     test.ok(jsonRepresentation.fr, 'No French representation found');
     test.ok(jsonRepresentation.fr.onlyInFrenchie, 'French only value not present')
     test.done();
+  },
+  'resx2json:noPrefix': function(test){
+    test.expect(2);
+    test.ok(grunt.file.exists('tmp/noPrefix/en.json'), 'en file not properly generated');
+    test.ok(grunt.file.exists('tmp/noPrefix/fr.json'), 'fr file not properly generated');
+    test.done();
   }
 };
